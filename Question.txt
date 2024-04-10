@@ -1,0 +1,52 @@
+ADMIN
+=====
+1. Can add teacher
+2. Login and Logout
+3. Can remove teacher or student
+4. can see all teacher/student, can search
+
+ADMIN VARIABLES
+================
+1. adminId - int
+2. adminEmail - String
+3. adminPassword - String
+
+TEACHER
+=======
+1. Can add book,student or remove book,student
+2. Can allocate book to student and deallocate it
+3. Can extend the allocate date of a book for a student
+4. Login and Logout
+5. Is book allocation ended
+6. All Books allocated to a student
+
+TEACHER VARIABLES
+=================
+1. teacherId - int
+2. teacherEmail - String
+3. teacherPassword - String
+
+STUDENT
+=======
+1. Can see which books are allocated to him
+
+BOOK VARIABLES
+==============
+1. bookId - int
+2. bookName - String
+3. totalAvailability - int
+4. bookLink - String
+5. isbnNo - String
+STUDENT VARIABLES
+=================
+1. studentId - int
+2. studentEmail - String
+3. studentPassword - String
+4. booksTakenByStudent - List<StudentBook> - @OneToMany
+
+STUDENTBOOK VARIABLES
+=====================
+1. bookTaken - Book - @OneToOne
+2. bookAllocationDate - Date
+3. bookAllocationEndDate - Date
+4. studentBookId - int

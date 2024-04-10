@@ -1,0 +1,19 @@
+server:
+  port: 8080
+spring:
+  datasource:
+    password: admin
+    url: jdbc:postgresql://localhost:5432/lms?createDatabaseIfNotExist=true
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  application:
+    name: LIBRARY-MANAGEMENT-SYSTEM
