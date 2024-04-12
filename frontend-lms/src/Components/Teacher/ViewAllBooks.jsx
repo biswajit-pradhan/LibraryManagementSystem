@@ -3,32 +3,57 @@ import LmsTable from "../LmsTable";
 import { NavLink } from "react-router-dom";
 
 const ViewAllBooks = () => {
-  const apiData = "/teacher/getAllBooks";
-  const accessorData = [
+  const apiToFetch = "/teacher/getAllBooks";
+  const columns = [
     {
-      accessorKey: "bookId",
-      header: "ID",
-      size: 150,
+      selector: (row) => row.bookId,
+      name: "ID",
+      sortable: true,
     },
     {
-      accessorKey: "bookName",
-      header: "BOOK NAME",
-      size: 150,
+      selector: (row) => row.bookName,
+      name: "BOOK NAME",
+      sortable: true,
     },
     {
-      accessorKey: "totalAvailability",
-      header: "TOTAL AVAILABILITY",
-      size: 150,
+      selector: (row) => row.totalAvailability,
+      name: "TOTAL AVAILABILITY",
+      sortable: true,
     },
     {
-      accessorKey: "bookLink",
-      header: "BOOK LINK",
-      size: 150,
+      name: "BOOK IMAGE",
+      cell: (row) => (
+        <img
+          src={row.bookLink}
+          alt="NOT FOUND"
+          style={{ height: "30vh", width: "25vh" }}
+        />
+      ),
     },
     {
-      accessorKey: "isbnNo",
-      header: "ISBN NO",
-      size: 150,
+      selector: (row) => row.isbnNo,
+      name: "ISBN NO",
+      sortable: true,
+    },
+    {
+      name: "Information",
+      cell: (row) => (
+        <button className="btn" onClick={() => alert(row.bookId)}>
+          <i className="material-icons" style={{ color: "green" }}>
+            info
+          </i>
+        </button>
+      ),
+    },
+    {
+      name: "Delete",
+      cell: (row) => (
+        <button className="btn" onClick={() => alert(row.bookId)}>
+          <i className="material-icons" style={{ color: "red" }}>
+            delete
+          </i>
+        </button>
+      ),
     },
   ];
 
@@ -58,8 +83,8 @@ const ViewAllBooks = () => {
         </NavLink>
       </div>
       <LmsTable
-        apiData={apiData}
-        accessorData={accessorData}
+        apiToFetch={apiToFetch}
+        columns={columns}
         changeInResponse={changeInResponse}
       />
     </div>

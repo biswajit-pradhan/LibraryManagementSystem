@@ -4,6 +4,7 @@ import Marquee from "react-fast-marquee";
 
 import library from "../Images/library.png";
 import library2 from "../Images/library2.png";
+import Crousal from "./Crousal";
 
 const Homepage = () => {
   return (
@@ -21,6 +22,40 @@ const Homepage = () => {
         Biswajit Pradhan.
       </Marquee>
       <div className="container-fluid">
+        <div className="row">
+          <div className="col-md-6 custom_font">
+            <h3
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <ReactTyped
+                strings={["LATEST BOOKS"]}
+                typeSpeed={30}
+                showCursor={false}
+              />
+            </h3>
+            <Crousal link="/getLatestTenBooks" />
+          </div>
+          <div className="col-md-6 custom_font">
+            <h3
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <ReactTyped
+                strings={["TOP BOOKS"]}
+                typeSpeed={30}
+                showCursor={false}
+              />
+            </h3>
+            <Crousal link="/getLatestTenBooks" />
+          </div>
+        </div>
         <section>
           <div className="row">
             <div className="col-md-6">
@@ -36,7 +71,7 @@ const Homepage = () => {
               <div className="mt-5">
                 <ReactTyped
                   strings={[
-                    "A library management system represents a pivotal tool in the modernization and optimization of library operations, integrating a multitude of functions to streamline processes and enhance user experiences. Through automation, it significantly reduces manual tasks associated with cataloging, circulation, patron management, and resource discovery, thereby allowing librarians to allocate their time more effectively towards providing personalized services and curating collections. By centralizing data and facilitating efficient access to resources, it empowers patrons to easily locate and borrow materials, whether physical or digital. Moreover, the system's reporting and analytics capabilities enable libraries to gain valuable insights into usage patterns, collection effectiveness, and operational efficiency, facilitating informed decision-making and strategic planning. Ultimately, a well-implemented library management system not only boosts organizational productivity but also fosters a more engaging and accessible environment for library users.",
+                    "A library management system (LMS) automates library operations like cataloging, circulation, and patron management. It organizes inventory, facilitates borrowing, and tracks due dates. LMS offers search capabilities for users, generates reports for librarians, and integrates with digital resources. It manages acquisitions, budgets, and adheres to industry standards. Customizable and scalable, LMS caters to various library types and ensures accessibility and a seamless user experience.",
                   ]}
                   typeSpeed={30}
                   loop

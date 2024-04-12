@@ -1,36 +1,18 @@
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
 import { Formik } from "formik";
+import { useState } from "react";
+import { NavLink, useParams } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import * as Yup from "yup";
-import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
 
 const DeallocateBook = () => {
   const [bookData, setBookData] = useState([]);
   const [studentData, setStudentData] = useState([]);
-  useEffect(() => {
-    const fetchBookData = async () => {
-      try {
-        const response = await axios.get("/teacher/getAllBooks");
-        setBookData(response.data);
-      } catch (error) {
-        console.error("Error fetching book data:", error);
-      }
-    };
-    const fetchStudentData = async () => {
-      try {
-        const response = await axios.get("teacher/getAllStudents");
-        setStudentData(response.data);
-      } catch (error) {
-        console.error("Error fetching student data:", error);
-      }
-    };
-    fetchBookData();
-    fetchStudentData();
-  }, []);
+  const { bookId, studentId } = useParams();
+
   const initialValues = {
-    bookId: "",
-    studentId: "",
+    bookId: bookId,
+    studentId: studentId,
   };
 
   const validationSchema = Yup.object().shape({
@@ -48,6 +30,8 @@ const DeallocateBook = () => {
       );
       console.log(response.data);
       toast.success("Book deallocated successfully!!");
+      values.bookId = "";
+      values.studentId = "";
       resetForm();
     } catch (error) {
       toast.error(error.response.data);
@@ -77,7 +61,7 @@ const DeallocateBook = () => {
             alignItems: "center",
           }}
         >
-          <h1 className="custom_font">DEALLOCATE BOOK TO A STUDENT</h1>
+          <h1 className="custom_font">DEALLOCATE BOOK FROM A STUDENT</h1>
         </div>
         <div>
           <div className="teacher_container">
@@ -91,7 +75,7 @@ const DeallocateBook = () => {
                     <div id="login-column" className="col-md-6">
                       <div id="login-box" className="col-md-12">
                         <h3 className="text-center text-dark custom_font">
-                          DEALLOCATE BOOK TO A STUDENT
+                          DEALLOCATE BOOK FROM A STUDENT
                         </h3>
                         <br />
                         <Formik

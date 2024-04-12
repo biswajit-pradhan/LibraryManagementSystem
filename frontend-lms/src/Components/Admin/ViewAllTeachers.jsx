@@ -3,17 +3,17 @@ import LmsTable from "../LmsTable";
 import { NavLink } from "react-router-dom";
 
 const ViewAllTeachers = () => {
-  const apiData = "/admin/getAllTeachers";
-  const accessorData = [
+  const apiToFetch = "/admin/getAllTeachers";
+  const columns = [
     {
-      accessorKey: "teacherId",
-      header: "ID",
-      size: 150,
+      selector: (row) => row.teacherId,
+      name: "ID",
+      sortable: true,
     },
     {
-      accessorKey: "teacherEmail",
-      header: "Email",
-      size: 150,
+      selector: (row) => row.teacherEmail,
+      name: "Email",
+      sortable: true,
     },
   ];
 
@@ -39,8 +39,8 @@ const ViewAllTeachers = () => {
         </NavLink>
       </div>
       <LmsTable
-        apiData={apiData}
-        accessorData={accessorData}
+        apiToFetch={apiToFetch}
+        columns={columns}
         changeInResponse={changeInResponse}
       />
     </div>

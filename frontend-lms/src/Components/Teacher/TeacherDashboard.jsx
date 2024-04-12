@@ -69,57 +69,7 @@ const TeacherDashboard = () => {
                 </div>
               </div>
             </div>
-            <div className="row mt-3">
-              <div className="col-sm-6">
-                <div className="card">
-                  <NavLink
-                    type="button"
-                    className="btn btn-warning"
-                    to="/viewallbookstakenbyastudent"
-                  >
-                    VIEW ALL BOOKS TAKEN BY A STUDENT
-                  </NavLink>
-                </div>
-              </div>
-            </div>
-            <div className="row mt-3">
-              <div className="col-sm-3">
-                <div className="card">
-                  <NavLink
-                    type="button"
-                    className="btn btn-danger"
-                    to="/removestudentbyemail"
-                  >
-                    REMOVE STUDENT BY EMAIL
-                  </NavLink>
-                </div>
-              </div>
-              <div className="col-sm-3">
-                <div className="card">
-                  <NavLink
-                    type="button"
-                    className="btn btn-danger"
-                    to="/removestudentbyid"
-                  >
-                    REMOVE STUDENT BY ID
-                  </NavLink>
-                </div>
-              </div>
-            </div>
 
-            <div className="row mt-3">
-              <div className="col-sm-6">
-                <div className="card">
-                  <NavLink
-                    type="button"
-                    className="btn btn-danger"
-                    to="/removebookbybookid"
-                  >
-                    REMOVE BOOK BY BOOK ID
-                  </NavLink>
-                </div>
-              </div>
-            </div>
             <div className="row mt-3">
               <div className="col-sm-3">
                 <div className="card">

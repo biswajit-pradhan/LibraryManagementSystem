@@ -1,11 +1,12 @@
 import axios from "axios";
 import { Formik } from "formik";
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import * as Yup from "yup";
 
 const AllocateBook = () => {
+  const { studentId, bookId } = useParams();
   const [bookData, setBookData] = useState([]);
   const [studentData, setStudentData] = useState([]);
   useEffect(() => {
@@ -19,7 +20,7 @@ const AllocateBook = () => {
     };
     const fetchStudentData = async () => {
       try {
-        const response = await axios.get("teacher/getAllStudents");
+        const response = await axios.get("/teacher/getAllStudents");
         setStudentData(response.data);
       } catch (error) {
         console.error("Error fetching student data:", error);
@@ -29,8 +30,8 @@ const AllocateBook = () => {
     fetchStudentData();
   }, []);
   const initialValues = {
-    bookId: "",
-    studentId: "",
+    bookId: bookId,
+    studentId: studentId,
   };
 
   const validationSchema = Yup.object().shape({
@@ -48,6 +49,8 @@ const AllocateBook = () => {
       );
       console.log(response.data);
       toast.success("Book allocated successfully!!");
+      values.bookId = "";
+      values.studentId = "";
       resetForm();
     } catch (error) {
       toast.error(error.response.data);
@@ -129,7 +132,10 @@ const AllocateBook = () => {
                                 {bookData.map((book) => {
                                   return book.bookId ===
                                     Number(values.bookId) ? (
-                                    <span className="showbooks">
+                                    <span
+                                      className="showbooks"
+                                      key={book.bookId}
+                                    >
                                       {book.bookName}
                                     </span>
                                   ) : null;
@@ -159,7 +165,10 @@ const AllocateBook = () => {
                                 {studentData.map((student) => {
                                   return student.studentId ===
                                     Number(values.studentId) ? (
-                                    <span className="showbooks">
+                                    <span
+                                      className="showbooks"
+                                      key={student.studentId}
+                                    >
                                       {student.studentEmail}
                                     </span>
                                   ) : null;

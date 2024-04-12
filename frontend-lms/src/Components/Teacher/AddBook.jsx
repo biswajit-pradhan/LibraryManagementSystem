@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 const AddBook = () => {
   const initialValues = {
     bookName: "",
-    totalAvailability: null,
+    totalAvailability: "",
     bookLink: "",
     isbnNo: "",
   };

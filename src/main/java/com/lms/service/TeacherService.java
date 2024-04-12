@@ -21,6 +21,7 @@ import com.lms.exception.NoBooksFoundException;
 import com.lms.exception.SameDateExtentionRequestException;
 import com.lms.exception.StudentAlreadyRegisteredException;
 import com.lms.exception.StudentBookDataNotFoundException;
+import com.lms.exception.StudentHasSomeBookException;
 import com.lms.exception.StudentNotFoundException;
 import com.lms.repository.BookRepository;
 import com.lms.repository.StudentBookRepository;
@@ -56,10 +57,21 @@ public class TeacherService {
 		if (!book.isPresent()) {
 			throw new BookNotFoundException("Book data not found with id " + bookId + "!!");
 		} else {
+			if(isBookAllocatedToSomeone(bookId)) {
+				throw new StudentHasSomeBookException("Book with id "+bookId+" is allocated to someone, please deallocate them first!!");
+			}
 			Book bookDataToReturn = book.get();
 			bookRepository.deleteById(bookId);
 			return bookDataToReturn;
 		}
+	}
+
+	public Boolean isBookAllocatedToSomeone(int bookId) {
+		return studentBookRepository.findAll().stream().anyMatch(sb -> sb.getBookTaken().getBookId() == bookId);
+	}
+	
+	public List<StudentBook> getAllStudentsWhoomABookIsAllocated(int bookId){
+		return null;
 	}
 
 	public Student addStudent(Student student) {
@@ -172,19 +184,20 @@ public class TeacherService {
 			return true;
 		}
 
-		throw new BookNotAllocatedToStudentException("Book with id "+bookData.getBookId()+"("+bookData.getBookName()+") is not allocated to Student with id "+studentData.getStudentId()+"("+studentData.getStudentEmail()+")");
+		throw new BookNotAllocatedToStudentException("Book with id " + bookData.getBookId() + "("
+				+ bookData.getBookName() + ") is not allocated to Student with id " + studentData.getStudentId() + "("
+				+ studentData.getStudentEmail() + ")");
 	}
-	
-	public List<StudentBook> getAllBooksAllocatedToAStudent(int studentId){
+
+	public List<StudentBook> getAllBooksAllocatedToAStudent(int studentId) {
 		Optional<Student> student = studentRepository.findById(studentId);
-		if(student.isPresent()) {
-			List<StudentBook> allBooks=student.get().getBooksTakenByStudent();
-			if(allBooks.isEmpty()) {
-				throw new NoBooksFoundException("No Books Found For student with id "+studentId);
+		if (student.isPresent()) {
+			List<StudentBook> allBooks = student.get().getBooksTakenByStudent();
+			if (allBooks.isEmpty()) {
+				throw new NoBooksFoundException("No Books Found For student with id " + studentId);
 			}
 			return allBooks;
-		}
-		else {
+		} else {
 			throw new StudentNotFoundException("Student data not found with student id " + studentId);
 		}
 	}
@@ -210,8 +223,8 @@ public class TeacherService {
 
 		if (studentBook.isPresent()) {
 			if (dateAfter30Days.equals(studentBook.get().getBookAllocationEndDate())) {
-			    System.out.println("Date is already extended for this book for this student");
-			    throw new SameDateExtentionRequestException("Date is already extended for this book for this student");
+				System.out.println("Date is already extended for this book for this student");
+				throw new SameDateExtentionRequestException("Date is already extended for this book for this student");
 			}
 			StudentBook sb = studentBook.get();
 			sb.setBookAllocationEndDate(dateAfter30Days);
@@ -248,6 +261,11 @@ public class TeacherService {
 		if (student.isEmpty()) {
 			throw new StudentNotFoundException("Student data not found with id " + studentId + "!!");
 		} else {
+			Boolean isAnyBookTaken = student.get().getBooksTakenByStudent().isEmpty();
+			if (!isAnyBookTaken) {
+				throw new StudentHasSomeBookException(
+						"Student with id " + studentId + " has taken some books. Please deallocate them first!!");
+			}
 			studentRepository.deleteById(student.get().getStudentId());
 			return true;
 		}

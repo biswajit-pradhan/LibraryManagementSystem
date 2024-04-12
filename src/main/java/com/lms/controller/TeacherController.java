@@ -53,11 +53,6 @@ public class TeacherController {
 	public ResponseEntity<?> getAllBooksAllocatedToAStudent(@PathVariable("studentId") int studentId) {
 		return ResponseEntity.ok(teacherService.getAllBooksAllocatedToAStudent(studentId));
 	}
-
-	@DeleteMapping("/deleteStudentByStudentEmail/{studentEmail}")
-	public ResponseEntity<?> deleteStudentByStudentEmail(@PathVariable("studentEmail") String studentEmail) {
-		return ResponseEntity.ok(teacherService.deleteStudentByStudentEmail(studentEmail));
-	}
 	
 	@DeleteMapping("/deleteStudentByStudentId/{studentId}")
 	public ResponseEntity<?> deleteStudentByStudentId(@PathVariable("studentId") int studentId) {

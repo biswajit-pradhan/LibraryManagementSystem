@@ -1,16 +1,17 @@
 import axios from "axios";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import * as Yup from "yup";
 
 const RemoveStudentById = () => {
+  const { idOfStudent } = useParams();
   const [studentData, setStudentData] = useState([]);
   useEffect(() => {
     const fetchStudentData = async () => {
       try {
-        const response = await axios.get("teacher/getAllStudents");
+        const response = await axios.get("/teacher/getAllStudents");
         setStudentData(response.data);
       } catch (error) {
         console.error("Error fetching student data:", error);
@@ -19,7 +20,7 @@ const RemoveStudentById = () => {
     fetchStudentData();
   }, []);
   const initialValues = {
-    studentId: "",
+    studentId: idOfStudent,
   };
   const validationSchema = Yup.object().shape({
     studentId: Yup.number().required("Student Id Required"),
@@ -32,6 +33,7 @@ const RemoveStudentById = () => {
       );
       console.log(response.data);
       toast.success("Student deleted successfully!!");
+      values.studentId = "";
       resetForm();
     } catch (error) {
       toast.error(error.response.data);
@@ -61,7 +63,7 @@ const RemoveStudentById = () => {
           }}
         >
           <div className="custom_font">
-            <h1>REMOVE STUDENT BY ID</h1>
+            <h1>REMOVE STUDENT</h1>
           </div>
           <NavLink type="button" className="btn btn-success" to="/addstudent">
             ADD STUDENT
@@ -117,7 +119,10 @@ const RemoveStudentById = () => {
                             {studentData.map((student) => {
                               return student.studentId ===
                                 Number(values.studentId) ? (
-                                <span className="showbooks">
+                                <span
+                                  className="showbooks"
+                                  key={student.studentId}
+                                >
                                   {student.studentEmail}
                                 </span>
                               ) : null;

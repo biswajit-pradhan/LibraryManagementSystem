@@ -13,14 +13,14 @@ import Navbar from "./Components/Navbar";
 import AddBook from "./Components/Teacher/AddBook";
 import AddStudent from "./Components/Teacher/AddStudent";
 import AllocateBook from "./Components/Teacher/AllocateBook";
+import BookSelection from "./Components/Teacher/BookSelection";
 import DeallocateBook from "./Components/Teacher/DeallocateBook";
 import ExtendAllocateDate from "./Components/Teacher/ExtendAllocateDate";
 import RemoveBookByBookId from "./Components/Teacher/RemoveBookByBookId";
-import RemoveStudentByEmail from "./Components/Teacher/RemoveStudentByEmail";
 import RemoveStudentById from "./Components/Teacher/RemoveStudentById";
 import TeacherDashboard from "./Components/Teacher/TeacherDashboard";
 import ViewAllBooks from "./Components/Teacher/ViewAllBooks";
-import ViewAllBooksTakenByAStudent from "./Components/Teacher/ViewAllBooksTakenByAStudent";
+import ViewAllBooksTakenByAStudent from "./Components/Teacher/ViewAllBooksTakenByAStudent.jsx";
 import PageNotFound from "./PageNotFound";
 
 const Navigation = () => {
@@ -41,17 +41,27 @@ const Navigation = () => {
         <Route path="/addbook" element={<AddBook />} />
         <Route path="/viewallbooks" element={<ViewAllBooks />} />
         <Route
-          path="/viewallbookstakenbyastudent"
+          path="/viewallbookstakenbyastudent/:studentId/:studentEmail"
           element={<ViewAllBooksTakenByAStudent />}
         />
+
         <Route
-          path="/removestudentbyemail"
-          element={<RemoveStudentByEmail />}
+          path="/removestudentbyid/:idOfStudent"
+          element={<RemoveStudentById />}
         />
-        <Route path="/removestudentbyid" element={<RemoveStudentById />} />
         <Route path="/removebookbybookid" element={<RemoveBookByBookId />} />
-        <Route path="/allocatebook" element={<AllocateBook />} />
-        <Route path="/deallocatebook" element={<DeallocateBook />} />
+        <Route
+          path="/allocatebook/:bookId/:studentId"
+          element={<AllocateBook />}
+        />
+        <Route
+          path="/bookselection/:studentId/:studentEmail"
+          element={<BookSelection />}
+        />
+        <Route
+          path="/deallocatebook/:bookId/:studentId"
+          element={<DeallocateBook />}
+        />
         <Route path="/extendallocatedate" element={<ExtendAllocateDate />} />
       </Routes>
       <Footer />

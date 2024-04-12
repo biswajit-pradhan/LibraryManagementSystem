@@ -17,3 +17,10 @@ spring:
       max-request-size: 10MB
   application:
     name: LIBRARY-MANAGEMENT-SYSTEM
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    health:
+      show-details: always

@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalException {
 	
+	@ExceptionHandler(StudentHasSomeBookException.class)
+	public ResponseEntity<?> handleStudentHasSomeBookException(StudentHasSomeBookException e){
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+	}
+	
 	@ExceptionHandler(NoBooksFoundException.class)
 	public ResponseEntity<?> handleNoBooksFoundException(NoBooksFoundException e){
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

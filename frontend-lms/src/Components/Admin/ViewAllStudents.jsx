@@ -3,17 +3,58 @@ import { NavLink } from "react-router-dom";
 import LmsTable from "../LmsTable";
 
 const ViewAllStudents = () => {
-  const apiData = "/admin/getAllStudents";
-  const accessorData = [
+  const apiToFetch = "/admin/getAllStudents";
+  const columns = [
     {
-      accessorKey: "studentId",
-      header: "ID",
-      size: 150,
+      selector: (row) => row.studentId,
+      name: "ID",
+      sortable: true,
     },
     {
-      accessorKey: "studentEmail",
-      header: "Email",
-      size: 150,
+      selector: (row) => row.studentEmail,
+      name: "EMAIL",
+      sortable: true,
+    },
+    {
+      name: "ALL BOOKS TAKEN / DEALLOCATE",
+      cell: (row) => (
+        <NavLink
+          className="btn"
+          to={
+            "/viewallbookstakenbyastudent/" +
+            row.studentId +
+            "/" +
+            row.studentEmail
+          }
+        >
+          <i className="material-icons" style={{ color: "green" }}>
+            info
+          </i>
+        </NavLink>
+      ),
+    },
+    {
+      name: "DELETE STUDENT",
+      cell: (row) => (
+        <NavLink className="btn" to={"/removestudentbyid/" + row.studentId}>
+          <i className="material-icons" style={{ color: "red" }}>
+            delete
+          </i>
+        </NavLink>
+      ),
+    },
+    {
+      name: "ALLOCATE BOOK",
+      cell: (row) => (
+        <NavLink
+          className="btn"
+          to={"/bookselection/" + row.studentId + "/" + row.studentEmail}
+        >
+          <i className="material-icons" style={{ color: "green" }}>
+            book
+          </i>
+        </NavLink>
+      ),
     },
   ];
 
@@ -28,28 +69,14 @@ const ViewAllStudents = () => {
           alignItems: "center",
         }}
       >
-        <h1 className="custom_font">VIEW ALL TEACHERS</h1>
+        <h1 className="custom_font">VIEW ALL STUDENTS</h1>
         <NavLink type="button" className="btn btn-success" to="/addstudent">
           ADD STUDENT
         </NavLink>
-        <NavLink
-          type="button"
-          className="btn btn-danger"
-          to="/removestudentbyemail"
-        >
-          REMOVE STUDENT BY EMAIL
-        </NavLink>
-        <NavLink
-          type="button"
-          className="btn btn-danger"
-          to="/removestudentbyid"
-        >
-          REMOVE STUDENT BY ID
-        </NavLink>
       </div>
       <LmsTable
-        apiData={apiData}
-        accessorData={accessorData}
+        apiToFetch={apiToFetch}
+        columns={columns}
         changeInResponse={changeInResponse}
       />
     </div>

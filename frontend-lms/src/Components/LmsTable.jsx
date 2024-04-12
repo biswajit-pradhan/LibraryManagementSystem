@@ -1,28 +1,23 @@
 import axios from "axios";
-import {
-  MaterialReactTable,
-  useMaterialReactTable,
-} from "material-react-table";
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
+import DataTable from "react-data-table-component";
 import ReactLoading from "react-loading";
 import { toast, ToastContainer } from "react-toastify";
 
-//apiData: It is the link to be fetched
-//accessorData: It is the accessorData
-//changeInResponse: It will check if we need to get any extra data after fetching data
-const LmsTable = ({ apiData, accessorData, changeInResponse }) => {
+// props:{apiToFetch, columns, changeInResponse};
+
+const LmsTable = (props) => {
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(apiData);
-        changeInResponse
-          ? setData(response.data[changeInResponse])
-          : setData(response.data);
-        console.log(data);
+        const response = await axios.get(props.apiToFetch);
+        setData(response.data);
+        setFilteredData(response.data);
       } catch (error) {
         toast.error(error.response.data);
       } finally {
@@ -33,25 +28,55 @@ const LmsTable = ({ apiData, accessorData, changeInResponse }) => {
     fetchData();
   }, []);
 
-  const columns = useMemo(() => accessorData, []);
+  // const columns = [
+  //   {
+  //     name: "ID",
+  //     selector: (row) => row.id,
+  //     sortable: true,
+  //   },
+  // {
+  //   name: "Information",
+  //   cell: (row) => (
+  //     <button className="btn" onClick={() => handleInfo(row.id)}>
+  //       <i className="material-icons" style={{ color: "green" }}>
+  //         info
+  //       </i>
+  //     </button>
+  //   ),
+  // },
+  // ];
+  const handleInfo = (id) => {
+    alert("info about id " + id);
+  };
 
-  const table = useMaterialReactTable({
-    columns,
-    data,
-    muiTableHeadCellProps: {
-      sx: {
-        fontWeight: "bolder",
-        fontSize: "20px",
-        color: "black",
-      },
+  const handleDelete = (id) => {
+    alert("deleted with id " + id);
+  };
+
+  const handleFilter = (event) => {
+    const keyword = event.target.value.toLowerCase();
+    const filteredResult = data.filter((item) => {
+      return Object.values(item).some(
+        (value) =>
+          value !== null && value.toString().toLowerCase().includes(keyword)
+      );
+    });
+    setFilteredData(filteredResult);
+  };
+
+  const conditionalRowStyles = [
+    {
+      when: (row) => true,
+      style: (row) => ({
+        // backgroundColor: row.id % 2 === 0 ? "#f2f2f2" : "",
+        // cursor: "pointer",
+        "&:hover": {
+          backgroundColor: "#f2f2f2",
+          fontSize: "14px",
+        },
+      }),
     },
-    muiTableBodyCellProps: {
-      sx: {
-        backgroundColor: "aliceblue",
-        color: "black",
-      },
-    },
-  });
+  ];
 
   return loading ? (
     <>
@@ -80,7 +105,27 @@ const LmsTable = ({ apiData, accessorData, changeInResponse }) => {
     </>
   ) : (
     <>
-      <MaterialReactTable table={table} />
+      <div className="container-fluid mt-5">
+        <div className="input-group mb-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Search"
+            onChange={handleFilter}
+          />
+        </div>
+        <DataTable
+          columns={props.columns}
+          data={filteredData}
+          // selectableRows
+          fixedHeader
+          pagination
+          paginationPerPage={10}
+          paginationRowsPerPageOptions={[20, 30]}
+          conditionalRowStyles={conditionalRowStyles}
+          className="table table-info"
+        />
+      </div>
     </>
   );
 };
