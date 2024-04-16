@@ -20,17 +20,17 @@ public class AdminController {
 
 	@Autowired
 	private AdminService adminService;
-	
+
 	@GetMapping("/getAllTeachers")
 	public ResponseEntity<?> getAllTeachers() {
 		return ResponseEntity.ok(adminService.getAllTeachers());
 	}
-	
+
 	@GetMapping("/getAllStudents")
 	public ResponseEntity<?> getAllStudents() {
 		return ResponseEntity.ok(adminService.getAllStudents());
 	}
-	
+
 	@PostMapping("/addTeacher")
 	public ResponseEntity<?> addTeacher(@RequestBody Teacher teacher) {
 		return ResponseEntity.ok(adminService.addTeacher(teacher));

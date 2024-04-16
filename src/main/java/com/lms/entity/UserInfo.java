@@ -9,17 +9,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class Teacher {
-
+@Entity
+public class UserInfo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int teacherId;
-
-	private String teacherEmail;
-	private String teacherPassword;
+	private int userId;
+	
+	private String email;
+	private String password;
+	private String roles;
 }

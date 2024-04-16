@@ -31,7 +31,7 @@ const ViewAllBooksTakenByAStudent = () => {
       cell: (row) => (
         <NavLink
           className="btn"
-          to={"/deallocatebook/" + row.bookTaken.bookId + "/" + studentId}
+          to={"/extendallocatedate/" + row.bookTaken.bookId + "/" + studentId}
         >
           <i className="material-icons" style={{ color: "blue" }}>
             info

@@ -22,7 +22,7 @@ const AdminDashboard = () => {
         <div>
           <div className="input_font">
             <div className="row mt-3">
-              <div className="col-sm-3">
+              <div className="col-sm-6">
                 <div className="card">
                   <NavLink
                     type="button"
@@ -30,17 +30,6 @@ const AdminDashboard = () => {
                     to="/addteacher"
                   >
                     ADD TEACHER
-                  </NavLink>
-                </div>
-              </div>
-              <div className="col-sm-3">
-                <div className="card">
-                  <NavLink
-                    type="button"
-                    className="btn btn-danger"
-                    to="/deleteteacher"
-                  >
-                    DELETE TEACHER
                   </NavLink>
                 </div>
               </div>
@@ -62,7 +51,7 @@ const AdminDashboard = () => {
                   <NavLink
                     type="button"
                     className="btn btn-warning"
-                    to="/viewallstudents"
+                    to="/viewallstudentsfromadmin"
                   >
                     VIEW ALL STUDENTS
                   </NavLink>

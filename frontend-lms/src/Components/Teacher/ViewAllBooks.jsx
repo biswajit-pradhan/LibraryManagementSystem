@@ -36,23 +36,28 @@ const ViewAllBooks = () => {
       sortable: true,
     },
     {
-      name: "Information",
+      name: "STUDENTS WHO TAKEN",
       cell: (row) => (
-        <button className="btn" onClick={() => alert(row.bookId)}>
+        <NavLink
+          className="btn"
+          to={
+            "/viewallstudentswhotakenabook/" + row.bookId + "/" + row.bookName
+          }
+        >
           <i className="material-icons" style={{ color: "green" }}>
             info
           </i>
-        </button>
+        </NavLink>
       ),
     },
     {
       name: "Delete",
       cell: (row) => (
-        <button className="btn" onClick={() => alert(row.bookId)}>
+        <NavLink className="btn" to={"/removebookbybookid/" + row.bookId}>
           <i className="material-icons" style={{ color: "red" }}>
             delete
           </i>
-        </button>
+        </NavLink>
       ),
     },
   ];

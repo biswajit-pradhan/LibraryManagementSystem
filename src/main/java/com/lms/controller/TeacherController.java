@@ -54,6 +54,11 @@ public class TeacherController {
 		return ResponseEntity.ok(teacherService.getAllBooksAllocatedToAStudent(studentId));
 	}
 	
+	@GetMapping("/getAllStudentsWhoomABookIsAllocated/{bookId}")
+	public ResponseEntity<?> getAllStudentsWhoomABookIsAllocated(@PathVariable("bookId") int bookId) {
+		return ResponseEntity.ok(teacherService.getAllStudentsWhoomABookIsAllocated(bookId));
+	}
+	
 	@DeleteMapping("/deleteStudentByStudentId/{studentId}")
 	public ResponseEntity<?> deleteStudentByStudentId(@PathVariable("studentId") int studentId) {
 		return ResponseEntity.ok(teacherService.deleteStudentByStudentId(studentId));

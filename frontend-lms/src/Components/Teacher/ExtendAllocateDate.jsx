@@ -1,11 +1,12 @@
 import axios from "axios";
 import { Formik } from "formik";
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import * as Yup from "yup";
 
 const ExtendAllocateDate = () => {
+  const { bookId, studentId } = useParams();
   const [bookData, setBookData] = useState([]);
   const [studentData, setStudentData] = useState([]);
   useEffect(() => {
@@ -19,7 +20,7 @@ const ExtendAllocateDate = () => {
     };
     const fetchStudentData = async () => {
       try {
-        const response = await axios.get("teacher/getAllStudents");
+        const response = await axios.get("/teacher/getAllStudents");
         setStudentData(response.data);
       } catch (error) {
         console.error("Error fetching student data:", error);
@@ -29,8 +30,8 @@ const ExtendAllocateDate = () => {
     fetchStudentData();
   }, []);
   const initialValues = {
-    bookId: "",
-    studentId: "",
+    bookId: bookId,
+    studentId: studentId,
   };
 
   const validationSchema = Yup.object().shape({
@@ -51,6 +52,8 @@ const ExtendAllocateDate = () => {
         "Allocation Date extended successfully!! Extended date is " +
           response.data
       );
+      values.bookId = "";
+      values.studentId = "";
       resetForm();
     } catch (error) {
       toast.error(error.response.data);

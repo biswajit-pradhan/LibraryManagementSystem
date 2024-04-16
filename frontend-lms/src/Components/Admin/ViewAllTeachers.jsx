@@ -15,6 +15,16 @@ const ViewAllTeachers = () => {
       name: "Email",
       sortable: true,
     },
+    {
+      name: "DELETE TEACHER",
+      cell: (row) => (
+        <NavLink className="btn" to={"/deleteTeacher/" + row.teacherEmail}>
+          <i className="material-icons" style={{ color: "red" }}>
+            delete
+          </i>
+        </NavLink>
+      ),
+    },
   ];
 
   const changeInResponse = null;

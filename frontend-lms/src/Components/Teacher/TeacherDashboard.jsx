@@ -69,44 +69,6 @@ const TeacherDashboard = () => {
                 </div>
               </div>
             </div>
-
-            <div className="row mt-3">
-              <div className="col-sm-3">
-                <div className="card">
-                  <NavLink
-                    type="button"
-                    className="btn btn-info"
-                    to="/allocatebook"
-                  >
-                    ALLOCATE BOOK
-                  </NavLink>
-                </div>
-              </div>
-              <div className="col-sm-3">
-                <div className="card">
-                  <NavLink
-                    type="button"
-                    className="btn btn-info"
-                    to="/deallocatebook"
-                  >
-                    DEALLOCATE BOOK
-                  </NavLink>
-                </div>
-              </div>
-            </div>
-            <div className="row mt-3">
-              <div className="col-sm-6">
-                <div className="card">
-                  <NavLink
-                    type="button"
-                    className="btn btn-info"
-                    to="/extendallocatedate"
-                  >
-                    EXTEND ALLOCATE DATE
-                  </NavLink>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>

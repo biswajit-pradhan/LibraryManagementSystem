@@ -1,13 +1,14 @@
 import axios from "axios";
+import { Formik } from "formik";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import * as Yup from "yup";
-import { Formik } from "formik";
 
 const DeleteTeacher = () => {
+  const { teacherEmail } = useParams();
   const initialValues = {
-    teacherEmail: "",
+    teacherEmail: teacherEmail,
   };
   const validationSchema = Yup.object().shape({
     teacherEmail: Yup.string()
@@ -23,6 +24,7 @@ const DeleteTeacher = () => {
       );
       console.log(response.data.teacherEmail);
       toast.success("Teacher deleted successfully!!");
+      values.teacherEmail = "";
       resetForm();
     } catch (error) {
       toast.error(error.response.data);

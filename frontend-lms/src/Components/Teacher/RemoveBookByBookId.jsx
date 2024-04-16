@@ -1,11 +1,12 @@
 import axios from "axios";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import * as Yup from "yup";
 
 const RemoveBookByBookId = () => {
+  const { bookId } = useParams();
   const [bookData, setBookData] = useState([]);
   useEffect(() => {
     const fetchBookData = async () => {
@@ -20,7 +21,7 @@ const RemoveBookByBookId = () => {
     fetchBookData();
   }, []);
   const initialValues = {
-    bookId: "",
+    bookId: bookId,
   };
   const validationSchema = Yup.object().shape({
     bookId: Yup.number().required("Book Id Required"),
@@ -33,6 +34,7 @@ const RemoveBookByBookId = () => {
       );
       console.log(response.data);
       toast.success("Book deleted successfully!!");
+      values.bookId = "";
       resetForm();
     } catch (error) {
       toast.error(error.response.data);

@@ -13,6 +13,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalException {
 	
+	@ExceptionHandler(UserAlredayExistException.class)
+	public ResponseEntity<?> handleUserAlredayExistException(UserAlredayExistException e){
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+	}
+	
+	@ExceptionHandler(BookNotAssignedToAnyoneException.class)
+	public ResponseEntity<?> handleBookNotAssignedToAnyoneException(BookNotAssignedToAnyoneException e){
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+	}
+	
 	@ExceptionHandler(StudentHasSomeBookException.class)
 	public ResponseEntity<?> handleStudentHasSomeBookException(StudentHasSomeBookException e){
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

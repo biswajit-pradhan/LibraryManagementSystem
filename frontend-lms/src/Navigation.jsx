@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import AddTeacher from "./Components/Admin/AddTeacher";
 import AdminDashboard from "./Components/Admin/AdminDashboard";
 import DeleteTeacher from "./Components/Admin/DeleteTeacher";
-import ViewAllStudents from "./Components/Admin/ViewAllStudents";
+import ViewAllStudentsFromAdmin from "./Components/Admin/ViewAllStudentsFromAdmin";
 import ViewAllTeachers from "./Components/Admin/ViewAllTeachers";
 import Footer from "./Components/Footer";
 import Homepage from "./Components/Homepage";
@@ -21,6 +21,8 @@ import RemoveStudentById from "./Components/Teacher/RemoveStudentById";
 import TeacherDashboard from "./Components/Teacher/TeacherDashboard";
 import ViewAllBooks from "./Components/Teacher/ViewAllBooks";
 import ViewAllBooksTakenByAStudent from "./Components/Teacher/ViewAllBooksTakenByAStudent.jsx";
+import ViewAllStudents from "./Components/Teacher/ViewAllStudents";
+import ViewAllStudentsWhoTakenABook from "./Components/Teacher/ViewAllStudentsWhoTakenABook";
 import PageNotFound from "./PageNotFound";
 
 const Navigation = () => {
@@ -33,9 +35,16 @@ const Navigation = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
         <Route path="/addteacher" element={<AddTeacher />} />
-        <Route path="/deleteteacher" element={<DeleteTeacher />} />
+        <Route
+          path="/deleteteacher/:teacherEmail"
+          element={<DeleteTeacher />}
+        />
         <Route path="/viewallteachers" element={<ViewAllTeachers />} />
         <Route path="/viewallstudents" element={<ViewAllStudents />} />
+        <Route
+          path="/viewallstudentsfromadmin"
+          element={<ViewAllStudentsFromAdmin />}
+        />
         <Route path="/teacherdashboard" element={<TeacherDashboard />} />
         <Route path="/addstudent" element={<AddStudent />} />
         <Route path="/addbook" element={<AddBook />} />
@@ -46,10 +55,18 @@ const Navigation = () => {
         />
 
         <Route
+          path="/viewallstudentswhotakenabook/:bookId/:bookName"
+          element={<ViewAllStudentsWhoTakenABook />}
+        />
+
+        <Route
           path="/removestudentbyid/:idOfStudent"
           element={<RemoveStudentById />}
         />
-        <Route path="/removebookbybookid" element={<RemoveBookByBookId />} />
+        <Route
+          path="/removebookbybookid/:bookId"
+          element={<RemoveBookByBookId />}
+        />
         <Route
           path="/allocatebook/:bookId/:studentId"
           element={<AllocateBook />}
@@ -62,7 +79,10 @@ const Navigation = () => {
           path="/deallocatebook/:bookId/:studentId"
           element={<DeallocateBook />}
         />
-        <Route path="/extendallocatedate" element={<ExtendAllocateDate />} />
+        <Route
+          path="/extendallocatedate/:bookId/:studentId"
+          element={<ExtendAllocateDate />}
+        />
       </Routes>
       <Footer />
     </>

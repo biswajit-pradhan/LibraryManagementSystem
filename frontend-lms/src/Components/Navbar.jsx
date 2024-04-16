@@ -3,6 +3,8 @@ import { NavLink } from "react-router-dom";
 
 import logo from "../Images/Logo.jpg";
 
+const role = "STUDENT";
+
 const Navbar = () => {
   return (
     <>
@@ -31,11 +33,6 @@ const Navbar = () => {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             {/* <div className="ms-auto">
-              <NavLink to="/login">
-                <button className="btn btn-outline-light me-2">LOG IN</button>
-              </NavLink>
-            </div>
-            <div className="ms-auto">
               <NavLink to="/admindashboard">
                 <button className="btn btn-outline-light me-2">
                   ADMIN DASHBOARD
@@ -49,6 +46,30 @@ const Navbar = () => {
                 </button>
               </NavLink>
             </div>
+
+            {/* <div className="ms-auto">
+              <NavLink to="/teacherdashboard">
+                <button className="btn btn-outline-light me-2">
+                  STUDENT DASHBOARD
+                </button>
+              </NavLink>
+            </div>
+
+            {role === "" ? (
+              <div className="ms-auto">
+                <NavLink to="/login">
+                  <button className="btn btn-outline-light me-2">LOG IN</button>
+                </NavLink>
+              </div>
+            ) : (
+              <div className="ms-auto">
+                <NavLink to="/login">
+                  <button className="btn btn-outline-light me-2">
+                    LOG OUT
+                  </button>
+                </NavLink>
+              </div>
+            )} */}
           </div>
         </div>
       </nav>

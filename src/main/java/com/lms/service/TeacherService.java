@@ -2,6 +2,7 @@ package com.lms.service;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,7 @@ import com.lms.entity.StudentBook;
 import com.lms.exception.BookAlreadyAssignedToStudentException;
 import com.lms.exception.BookAlreadyExistException;
 import com.lms.exception.BookNotAllocatedToStudentException;
+import com.lms.exception.BookNotAssignedToAnyoneException;
 import com.lms.exception.BookNotAvailableException;
 import com.lms.exception.BookNotFoundException;
 import com.lms.exception.BookNotTakenException;
@@ -70,8 +72,20 @@ public class TeacherService {
 		return studentBookRepository.findAll().stream().anyMatch(sb -> sb.getBookTaken().getBookId() == bookId);
 	}
 	
-	public List<StudentBook> getAllStudentsWhoomABookIsAllocated(int bookId){
-		return null;
+	public List<Student> getAllStudentsWhoomABookIsAllocated(int bookId){
+		List<Student> allStudents=getAllStudents();
+		List<Student> student=new ArrayList<Student>();
+		for(Student s:allStudents) {
+			Optional<StudentBook> studentToStore=s.getBooksTakenByStudent().stream()
+					.filter(sb->sb.getBookTaken().getBookId()==bookId).findAny();
+			if(studentToStore.isPresent()) {
+				student.add(s);
+			}
+		}
+		if(student.isEmpty()) {
+			throw new BookNotAssignedToAnyoneException("Book with id "+bookId+" is not assigned to anyone!!");
+		}
+		return student;
 	}
 
 	public Student addStudent(Student student) {
