@@ -7,11 +7,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.lms.entity.Book;
 import com.lms.entity.Student;
 import com.lms.entity.StudentBook;
+import com.lms.entity.UserInfo;
 import com.lms.exception.BookAlreadyAssignedToStudentException;
 import com.lms.exception.BookAlreadyExistException;
 import com.lms.exception.BookNotAllocatedToStudentException;
@@ -28,6 +30,7 @@ import com.lms.exception.StudentNotFoundException;
 import com.lms.repository.BookRepository;
 import com.lms.repository.StudentBookRepository;
 import com.lms.repository.StudentRepository;
+import com.lms.repository.UserInfoRepository;
 
 @Service
 public class TeacherService {
@@ -40,6 +43,12 @@ public class TeacherService {
 
 	@Autowired
 	private StudentBookRepository studentBookRepository;
+	
+	@Autowired
+	private UserInfoRepository userInfoRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	public Book addBook(Book book) {
 		Optional<Book> checkBookAvailableOrNot = bookRepository.findAll().stream()
@@ -59,8 +68,9 @@ public class TeacherService {
 		if (!book.isPresent()) {
 			throw new BookNotFoundException("Book data not found with id " + bookId + "!!");
 		} else {
-			if(isBookAllocatedToSomeone(bookId)) {
-				throw new StudentHasSomeBookException("Book with id "+bookId+" is allocated to someone, please deallocate them first!!");
+			if (isBookAllocatedToSomeone(bookId)) {
+				throw new StudentHasSomeBookException(
+						"Book with id " + bookId + " is allocated to someone, please deallocate them first!!");
 			}
 			Book bookDataToReturn = book.get();
 			bookRepository.deleteById(bookId);
@@ -71,19 +81,19 @@ public class TeacherService {
 	public Boolean isBookAllocatedToSomeone(int bookId) {
 		return studentBookRepository.findAll().stream().anyMatch(sb -> sb.getBookTaken().getBookId() == bookId);
 	}
-	
-	public List<Student> getAllStudentsWhoomABookIsAllocated(int bookId){
-		List<Student> allStudents=getAllStudents();
-		List<Student> student=new ArrayList<Student>();
-		for(Student s:allStudents) {
-			Optional<StudentBook> studentToStore=s.getBooksTakenByStudent().stream()
-					.filter(sb->sb.getBookTaken().getBookId()==bookId).findAny();
-			if(studentToStore.isPresent()) {
+
+	public List<Student> getAllStudentsWhoomABookIsAllocated(int bookId) {
+		List<Student> allStudents = getAllStudents();
+		List<Student> student = new ArrayList<Student>();
+		for (Student s : allStudents) {
+			Optional<StudentBook> studentToStore = s.getBooksTakenByStudent().stream()
+					.filter(sb -> sb.getBookTaken().getBookId() == bookId).findAny();
+			if (studentToStore.isPresent()) {
 				student.add(s);
 			}
 		}
-		if(student.isEmpty()) {
-			throw new BookNotAssignedToAnyoneException("Book with id "+bookId+" is not assigned to anyone!!");
+		if (student.isEmpty()) {
+			throw new BookNotAssignedToAnyoneException("Book with id " + bookId + " is not assigned to anyone!!");
 		}
 		return student;
 	}
@@ -95,17 +105,23 @@ public class TeacherService {
 			throw new StudentAlreadyRegisteredException(
 					"Student with email " + student.getStudentEmail() + " already registered!!");
 		} else {
+			userInfoRepository.save(UserInfo.builder()
+					.email(student.getStudentEmail())
+					.password(passwordEncoder.encode(student.getStudentPassword()))
+					.roles("ROLE_STUDENT").build());
 			return studentRepository.save(student);
 		}
 	}
 
 	public Boolean deleteStudentByStudentEmail(String studentEmail) {
 		Optional<Student> student = studentRepository.findStudentByStudentEmail(studentEmail);
-
+		Optional<UserInfo> studentInfo = userInfoRepository.findByEmail(studentEmail);
+		
 		if (student.isEmpty()) {
 			throw new StudentNotFoundException("Student data not found with email " + studentEmail + "!!");
 		} else {
 			studentRepository.deleteById(student.get().getStudentId());
+			userInfoRepository.deleteById(studentInfo.get().getUserId());
 			return true;
 		}
 	}
@@ -187,13 +203,11 @@ public class TeacherService {
 		if (bookToRemove.isPresent()) {
 			bookData.setTotalAvailability(currentToatlAvailabilityOfBook + 1);
 
-			Book bookToSaveInStudentBook = bookRepository.save(bookData);
-
-			bookToRemove.get().setBookTaken(bookToSaveInStudentBook);
-			studentBookRepository.save(bookToRemove.get());
+			bookRepository.save(bookData);
 
 			studentData.getBooksTakenByStudent().remove(bookToRemove.get());
 			studentRepository.save(studentData);
+			studentBookRepository.deleteById(bookToRemove.get().getStudentBookId());
 			// book successfully removed
 			return true;
 		}
@@ -271,6 +285,7 @@ public class TeacherService {
 
 	public Boolean deleteStudentByStudentId(int studentId) {
 		Optional<Student> student = studentRepository.findById(studentId);
+		
 
 		if (student.isEmpty()) {
 			throw new StudentNotFoundException("Student data not found with id " + studentId + "!!");
@@ -280,7 +295,9 @@ public class TeacherService {
 				throw new StudentHasSomeBookException(
 						"Student with id " + studentId + " has taken some books. Please deallocate them first!!");
 			}
+			Optional<UserInfo> studentInfo = userInfoRepository.findByEmail(student.get().getStudentEmail());
 			studentRepository.deleteById(student.get().getStudentId());
+			userInfoRepository.deleteById(studentInfo.get().getUserId());
 			return true;
 		}
 	}

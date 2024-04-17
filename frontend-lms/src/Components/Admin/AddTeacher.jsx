@@ -3,8 +3,10 @@ import { toast, ToastContainer } from "react-toastify";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const AddTeacher = () => {
+  const jwtToken = useSelector((state) => state.auth.jwtToken);
   const initialValues = {
     teacherEmail: "",
     teacherPassword: "",
@@ -19,14 +21,22 @@ const AddTeacher = () => {
 
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      const response = await axios.post("/admin/addTeacher", values);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      };
+
+      const response = await axios.post("/admin/addTeacher", values, config);
+
       console.log(response.data.teacherEmail);
       toast.success("Teacher added successfully!!");
       resetForm();
     } catch (error) {
       toast.error(error.response.data);
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitting(false);
   };
 
   return (

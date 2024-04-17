@@ -1,7 +1,9 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import LmsTable from "../LmsTable";
 
 const ViewAllStudentsFromAdmin = () => {
+  const jwtToken = useSelector((state) => state.auth.jwtToken);
   const apiToFetch = "/admin/getAllStudents";
   const columns = [
     {
@@ -33,6 +35,7 @@ const ViewAllStudentsFromAdmin = () => {
         apiToFetch={apiToFetch}
         columns={columns}
         changeInResponse={changeInResponse}
+        jwtToken={jwtToken}
       />
     </div>
   );

@@ -1,11 +1,12 @@
-import React from "react";
 import { NavLink } from "react-router-dom";
-
+import { useDispatch, useSelector } from "react-redux";
 import logo from "../Images/Logo.jpg";
-
-const role = "STUDENT";
+import { logout } from "../Redux/Slices/authSlice";
 
 const Navbar = () => {
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const roles = useSelector((state) => state.auth.roles);
+  const dispatch = useDispatch();
   return (
     <>
       <nav className="navbar navbar-expand-lg fixed-top sticky-top navbar-dark bg-primary">
@@ -32,30 +33,60 @@ const Navbar = () => {
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            {/* <div className="ms-auto">
-              <NavLink to="/admindashboard">
-                <button className="btn btn-outline-light me-2">
-                  ADMIN DASHBOARD
-                </button>
-              </NavLink>
-            </div> */}
-            <div className="ms-auto">
-              <NavLink to="/teacherdashboard">
-                <button className="btn btn-outline-light me-2">
-                  TEACHER DASHBOARD
-                </button>
-              </NavLink>
-            </div>
+            {roles.includes("ROLE_ADMIN") && roles.includes("ROLE_TEACHER") ? (
+              <>
+                <div className="ms-auto">
+                  <NavLink to="/admindashboard">
+                    <button className="btn btn-outline-light me-2">
+                      ADMIN DASHBOARD
+                    </button>
+                  </NavLink>
+                </div>
+                <div className="ms-auto">
+                  <NavLink to="/teacherdashboard">
+                    <button className="btn btn-outline-light me-2">
+                      TEACHER DASHBOARD
+                    </button>
+                  </NavLink>
+                </div>
+              </>
+            ) : null}
+            {roles === "ROLE_ADMIN" ? (
+              <>
+                <div className="ms-auto">
+                  <NavLink to="/admindashboard">
+                    <button className="btn btn-outline-light me-2">
+                      ADMIN DASHBOARD
+                    </button>
+                  </NavLink>
+                </div>
+              </>
+            ) : null}
+            {roles === "ROLE_TEACHER" ? (
+              <>
+                <div className="ms-auto">
+                  <NavLink to="/teacherdashboard">
+                    <button className="btn btn-outline-light me-2">
+                      TEACHER DASHBOARD
+                    </button>
+                  </NavLink>
+                </div>
+              </>
+            ) : null}
 
-            {/* <div className="ms-auto">
-              <NavLink to="/teacherdashboard">
-                <button className="btn btn-outline-light me-2">
-                  STUDENT DASHBOARD
-                </button>
-              </NavLink>
-            </div>
+            {roles === "ROLE_STUDENT" ? (
+              <>
+                <div className="ms-auto">
+                  <NavLink to="/studentdashboard">
+                    <button className="btn btn-outline-light me-2">
+                      STUDENT DASHBOARD
+                    </button>
+                  </NavLink>
+                </div>
+              </>
+            ) : null}
 
-            {role === "" ? (
+            {isLoggedIn === "false" ? (
               <div className="ms-auto">
                 <NavLink to="/login">
                   <button className="btn btn-outline-light me-2">LOG IN</button>
@@ -64,12 +95,17 @@ const Navbar = () => {
             ) : (
               <div className="ms-auto">
                 <NavLink to="/login">
-                  <button className="btn btn-outline-light me-2">
+                  <button
+                    className="btn btn-outline-light me-2"
+                    onClick={() => {
+                      dispatch(logout());
+                    }}
+                  >
                     LOG OUT
                   </button>
                 </NavLink>
               </div>
-            )} */}
+            )}
           </div>
         </div>
       </nav>

@@ -10,6 +10,7 @@ import Footer from "./Components/Footer";
 import Homepage from "./Components/Homepage";
 import Login from "./Components/Login";
 import Navbar from "./Components/Navbar";
+import StudentDashBoard from "./Components/Student/StudentDashBoard";
 import AddBook from "./Components/Teacher/AddBook";
 import AddStudent from "./Components/Teacher/AddStudent";
 import AllocateBook from "./Components/Teacher/AllocateBook";
@@ -24,6 +25,11 @@ import ViewAllBooksTakenByAStudent from "./Components/Teacher/ViewAllBooksTakenB
 import ViewAllStudents from "./Components/Teacher/ViewAllStudents";
 import ViewAllStudentsWhoTakenABook from "./Components/Teacher/ViewAllStudentsWhoTakenABook";
 import PageNotFound from "./PageNotFound";
+
+localStorage.setItem("username", "");
+localStorage.setItem("jwtToken", "");
+localStorage.setItem("roles", "");
+localStorage.setItem("isLoggedIn", false);
 
 const Navigation = () => {
   return (
@@ -83,6 +89,7 @@ const Navigation = () => {
           path="/extendallocatedate/:bookId/:studentId"
           element={<ExtendAllocateDate />}
         />
+        <Route path="/studentdashboard" element={<StudentDashBoard />} />
       </Routes>
       <Footer />
     </>

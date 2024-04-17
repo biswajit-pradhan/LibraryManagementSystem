@@ -23,7 +23,7 @@ public class StudentBook {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int studentBookId;
 	
-	@ManyToOne
+	@ManyToOne 
 	private Book bookTaken;
 	
 	private Date bookAllocationDate;

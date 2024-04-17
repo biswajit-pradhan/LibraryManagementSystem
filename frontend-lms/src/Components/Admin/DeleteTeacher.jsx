@@ -4,8 +4,10 @@ import React from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import * as Yup from "yup";
+import { useSelector } from "react-redux";
 
 const DeleteTeacher = () => {
+  const jwtToken = useSelector((state) => state.auth.jwtToken);
   const { teacherEmail } = useParams();
   const initialValues = {
     teacherEmail: teacherEmail,
@@ -16,11 +18,18 @@ const DeleteTeacher = () => {
       .required("Email address Required"),
   });
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
-    console.log(values);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    };
     try {
       const response = await axios.delete(
         "/admin/deleteTeacherByTeacherEmail",
-        { data: values.teacherEmail }
+        {
+          ...config,
+          data: values.teacherEmail,
+        }
       );
       console.log(response.data.teacherEmail);
       toast.success("Teacher deleted successfully!!");
@@ -28,8 +37,9 @@ const DeleteTeacher = () => {
       resetForm();
     } catch (error) {
       toast.error(error.response.data);
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitting(false);
   };
   return (
     <>

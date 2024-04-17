@@ -1,15 +1,18 @@
-import React, { useState } from "react";
 import axios from "axios";
-// import "./style.css";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import { login } from "../Redux/Slices/authSlice";
 
 const Login = () => {
   const [user, setUser] = useState({
-    userName: "",
+    username: "",
     password: "",
   });
   const [errors, setErrors] = useState({});
-  const [msg, setMsg] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const dispatch = useDispatch();
 
   const changeHandler = (event) => {
     setUser({
@@ -23,12 +26,12 @@ const Login = () => {
     let tempErrors = {};
     let formValid = true;
 
-    if (!user.userName) {
+    if (!user.username) {
       formValid = false;
-      tempErrors["userName"] = "Email cannot be empty";
-    } else if (!userNamePattern.test(user.userName)) {
+      tempErrors["username"] = "Email cannot be empty";
+    } else if (!userNamePattern.test(user.username)) {
       formValid = false;
-      tempErrors["userName"] = "Email not valid";
+      tempErrors["username"] = "Email not valid";
     }
 
     if (!user.password) {
@@ -42,26 +45,42 @@ const Login = () => {
 
   const loginUser = async () => {
     if (handleValidation()) {
-      // let authCode = "Basic " + btoa(user.userName + ":" + user.password);
-      // try {
-      //   const response = await axios.get("http://localhost:8080/api/user/login", {
-      //     headers: { Authorization: authCode },
-      //   });
-      //   const data = response.data;
-      //   console.log("login success " + data);
-      //   localStorage.setItem("userName", data.userName);
-      //   setIsLoggedIn(true);
-      // } catch (error) {
-      //   console.error(error);
-      //   setMsg("Invalid Credentials");
-      // }
+      try {
+        const response = await axios.post("/auth/login", user);
+        const data = response.data;
+        toast.success("login success!!");
+        setTimeout(() => {
+          dispatch(
+            login({
+              jwtToken: data.jwtToken,
+              username: data.username,
+              roles: data.roles,
+              isLoggedIn: "true",
+            })
+          );
+        }, 2000);
+      } catch (error) {
+        toast.error(error.response.data);
+      }
     }
   };
 
-  return isLoggedIn ? (
-    <div>Home Component</div>
+  return isLoggedIn === "true" ? (
+    <Navigate to="/" />
   ) : (
     <>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <div className="page_container">
         <div className="event-booking-container">
           <div id="login">
@@ -73,10 +92,9 @@ const Login = () => {
                 <div id="login-column" className="col-md-6">
                   <div id="login-box" className="col-md-12">
                     <h3 className="text-center text-dark custom_font">LOGIN</h3>
-                    <span style={{ color: "red" }}>{msg}</span> <br />
                     <div className="form-group">
                       <label
-                        htmlFor="userName"
+                        htmlFor="username"
                         className="text-dark custom_font"
                       >
                         EMAIL:
@@ -84,12 +102,12 @@ const Login = () => {
                       <br />
                       <input
                         className="form-control input_font"
-                        name="userName"
-                        value={user.userName}
+                        name="username"
+                        value={user.username}
                         onChange={changeHandler}
                       />
                     </div>
-                    <span className="errors">{errors["userName"]}</span>
+                    <span className="errors">{errors["username"]}</span>
                     <div className="form-group">
                       <label
                         htmlFor="password"

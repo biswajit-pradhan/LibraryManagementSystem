@@ -37,7 +37,7 @@ const Homepage = () => {
                 showCursor={false}
               />
             </h3>
-            <Crousal link="/getLatestTenBooks" />
+            <Crousal link="/global/getLatestTenBooks" />
           </div>
           <div className="col-md-6 custom_font">
             <h3
@@ -53,7 +53,7 @@ const Homepage = () => {
                 showCursor={false}
               />
             </h3>
-            <Crousal link="/getLatestTenBooks" />
+            <Crousal link="/global/getLatestTenBooks" />
           </div>
         </div>
         <section>

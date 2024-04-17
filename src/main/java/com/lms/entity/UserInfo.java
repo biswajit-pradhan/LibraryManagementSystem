@@ -10,10 +10,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 public class UserInfo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

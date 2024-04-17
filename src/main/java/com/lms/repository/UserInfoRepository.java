@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.lms.entity.UserInfo;
 
 @Repository
-public interface UserInfoRepository extends JpaRepository<UserInfo,Long> {
+public interface UserInfoRepository extends JpaRepository<UserInfo,Integer> {
 	Optional<UserInfo> findByEmail(String username);
 }

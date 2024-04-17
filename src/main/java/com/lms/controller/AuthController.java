@@ -1,13 +1,14 @@
 package com.lms.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,12 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lms.dto.JwtRequest;
 import com.lms.dto.JwtResponse;
 import com.lms.entity.UserInfo;
+import com.lms.exception.BadCredentialsException;
 import com.lms.security.JwtHelper;
-import com.lms.service.RefreshTokenService;
 import com.lms.service.UserInfoService;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = { "*" })
 public class AuthController {
 
 	@Autowired
@@ -36,8 +38,8 @@ public class AuthController {
 	@Autowired
 	private UserInfoService userInfoService;
 	
-	@Autowired
-    private RefreshTokenService refreshTokenService;
+//	@Autowired
+//    private RefreshTokenService refreshTokenService;
 
 //	private Logger logger = LoggerFactory.getLogger(AuthController.class);
 
@@ -48,9 +50,11 @@ public class AuthController {
 
 		UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
 		String token = this.helper.generateToken(userDetails);
+		Optional<UserInfo> userInfo=userInfoService.getAllUsers().stream()
+				.filter(u->u.getEmail().equals(userDetails.getUsername())).findAny();
+		String roles=userInfo.get().getRoles();
 		
-		return ResponseEntity.ok(JwtResponse.builder().jwtToken(token).username(userDetails.getUsername()).build());
-//		return new ResponseEntity<>(token, HttpStatus.OK);
+		return ResponseEntity.ok(JwtResponse.builder().jwtToken(token).username(userDetails.getUsername()).roles(roles).build());
 	}
 
 	private void doAuthenticate(String username, String password) {
@@ -59,7 +63,7 @@ public class AuthController {
 		try {
 			manager.authenticate(authentication);
 
-		} catch (BadCredentialsException e) {
+		} catch (Exception e) {
 			throw new BadCredentialsException(" Invalid Username or Password  !!");
 		}
 
@@ -91,8 +95,4 @@ public class AuthController {
 		return userInfoService.addUser(user);
 	}
 
-	@ExceptionHandler(BadCredentialsException.class)
-	public String exceptionHandler() {
-		return "Credentials Invalid !!";
-	}
 }

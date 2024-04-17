@@ -1,9 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 import { NavLink } from "react-router-dom";
 import { ReactTyped } from "react-typed";
 
 const AdminDashboard = () => {
+  const username = useSelector((state) => state.auth.username);
   return (
     <>
       <div className="container-fluid admin_dashboard">
@@ -13,7 +15,7 @@ const AdminDashboard = () => {
         <div>
           <h5>
             <ReactTyped
-              strings={["Welcome Admin"]}
+              strings={[`Welcome ${username}`]}
               typeSpeed={50}
               showCursor={false}
             />

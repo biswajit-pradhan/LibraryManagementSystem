@@ -4,7 +4,7 @@ import DataTable from "react-data-table-component";
 import ReactLoading from "react-loading";
 import { toast, ToastContainer } from "react-toastify";
 
-// props:{apiToFetch, columns, changeInResponse};
+// props:{apiToFetch, columns, changeInResponse, jwtToken};
 
 const LmsTable = (props) => {
   const [data, setData] = useState([]);
@@ -15,7 +15,12 @@ const LmsTable = (props) => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(props.apiToFetch);
+        const config = {
+          headers: {
+            Authorization: `Bearer ${props.jwtToken}`,
+          },
+        };
+        const response = await axios.get(props.apiToFetch, config);
         setData(response.data);
         setFilteredData(response.data);
       } catch (error) {
@@ -45,13 +50,6 @@ const LmsTable = (props) => {
   //   ),
   // },
   // ];
-  const handleInfo = (id) => {
-    alert("info about id " + id);
-  };
-
-  const handleDelete = (id) => {
-    alert("deleted with id " + id);
-  };
 
   const handleFilter = (event) => {
     const keyword = event.target.value.toLowerCase();
