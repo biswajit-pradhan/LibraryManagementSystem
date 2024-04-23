@@ -1,6 +1,6 @@
 import React from "react";
-import { ReactTyped } from "react-typed";
 import Marquee from "react-fast-marquee";
+import { ReactTyped } from "react-typed";
 
 import library from "../Images/library.png";
 import library2 from "../Images/library2.png";

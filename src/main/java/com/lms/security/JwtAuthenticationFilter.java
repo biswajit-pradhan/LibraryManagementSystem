@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.lms.config.CustomUserDetailService;
+import com.lms.exception.JwtExpiredException;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -59,7 +60,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 e.printStackTrace();
             } catch (ExpiredJwtException e) {
                 logger.info("Given jwt token is expired !!");
-                e.printStackTrace();
+                throw new JwtExpiredException("Your session has been expired...please login again");
             } catch (MalformedJwtException e) {
                 logger.info("Some changed has done in token !! Invalid Token");
                 e.printStackTrace();

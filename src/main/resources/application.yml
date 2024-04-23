@@ -17,3 +17,5 @@ spring:
       max-request-size: 10MB
   application:
     name: LIBRARY-MANAGEMENT-SYSTEM
+#jwt expire time in seconds 1800= 60*30 = 30 minute
+JWT_TOKEN_VALIDITY: 1800

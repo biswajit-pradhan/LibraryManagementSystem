@@ -1,10 +1,10 @@
 import axios from "axios";
 import { Formik } from "formik";
 import React from "react";
-import { NavLink, useParams } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
-import * as Yup from "yup";
 import { useSelector } from "react-redux";
+import { NavLink, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import * as Yup from "yup";
 
 const DeleteTeacher = () => {
   const jwtToken = useSelector((state) => state.auth.jwtToken);
@@ -43,18 +43,7 @@ const DeleteTeacher = () => {
   };
   return (
     <>
-      <ToastContainer
-        position="bottom-left"
-        autoClose={4000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
+
       <div className="delete_teacher">
         <div
           style={{

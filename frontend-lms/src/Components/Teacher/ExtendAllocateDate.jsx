@@ -1,18 +1,25 @@
 import axios from "axios";
 import { Formik } from "formik";
 import { useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
 import { NavLink, useParams } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import * as Yup from "yup";
 
 const ExtendAllocateDate = () => {
+  const jwtToken = useSelector((state) => state.auth.jwtToken);
   const { bookId, studentId } = useParams();
   const [bookData, setBookData] = useState([]);
   const [studentData, setStudentData] = useState([]);
   useEffect(() => {
     const fetchBookData = async () => {
       try {
-        const response = await axios.get("/teacher/getAllBooks");
+        const config = {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        };
+        const response = await axios.get("/teacher/getAllBooks", config);
         setBookData(response.data);
       } catch (error) {
         console.error("Error fetching book data:", error);
@@ -20,7 +27,12 @@ const ExtendAllocateDate = () => {
     };
     const fetchStudentData = async () => {
       try {
-        const response = await axios.get("/teacher/getAllStudents");
+        const config = {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        };
+        const response = await axios.get("/teacher/getAllStudents", config);
         setStudentData(response.data);
       } catch (error) {
         console.error("Error fetching student data:", error);
@@ -41,16 +53,22 @@ const ExtendAllocateDate = () => {
 
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      };
       const response = await axios.put(
         "/teacher/extendBookAllocationDateForAStudent/" +
-          values.bookId +
-          "/" +
-          values.studentId
+        values.bookId +
+        "/" +
+        values.studentId, null,
+        config
       );
       console.log(response.data);
       toast.success(
         "Allocation Date extended successfully!! Extended date is " +
-          response.data
+        response.data
       );
       values.bookId = "";
       values.studentId = "";
@@ -63,18 +81,6 @@ const ExtendAllocateDate = () => {
 
   return (
     <>
-      <ToastContainer
-        position="bottom-left"
-        autoClose={4000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
       <div>
         <div
           style={{

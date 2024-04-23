@@ -1,8 +1,10 @@
 import React from "react";
+import { useSelector } from 'react-redux';
 import { NavLink, useParams } from "react-router-dom";
 import LmsTable from "./../LmsTable";
 
 const ViewAllStudentsWhoTakenABook = () => {
+  const jwtToken = useSelector((state) => state.auth.jwtToken);
   const { bookId, bookName } = useParams();
   const apiToFetch = "/teacher/getAllStudentsWhoomABookIsAllocated/" + bookId;
   const columns = [
@@ -55,6 +57,7 @@ const ViewAllStudentsWhoTakenABook = () => {
             apiToFetch={apiToFetch}
             columns={columns}
             changeInResponse={changeInResponse}
+            jwtToken={jwtToken}
           />
         </div>
       </div>

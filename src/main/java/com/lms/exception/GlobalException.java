@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalException {
 	
+	@ExceptionHandler(JwtExpiredException.class)
+	public ResponseEntity<?> handleJwtExpiredException(JwtExpiredException e){
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+	}
+	
 	@ExceptionHandler(BadCredentialsException.class)
 	public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException e){
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

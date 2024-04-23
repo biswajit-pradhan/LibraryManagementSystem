@@ -3,6 +3,7 @@ package com.lms.controller;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,6 +39,9 @@ public class AuthController {
 	@Autowired
 	private UserInfoService userInfoService;
 	
+	@Value("${JWT_TOKEN_VALIDITY}")
+	private long JWT_TOKEN_VALIDITY;
+	
 //	@Autowired
 //    private RefreshTokenService refreshTokenService;
 
@@ -54,7 +58,7 @@ public class AuthController {
 				.filter(u->u.getEmail().equals(userDetails.getUsername())).findAny();
 		String roles=userInfo.get().getRoles();
 		
-		return ResponseEntity.ok(JwtResponse.builder().jwtToken(token).username(userDetails.getUsername()).roles(roles).build());
+		return ResponseEntity.ok(JwtResponse.builder().jwtTokenValidity(JWT_TOKEN_VALIDITY).jwtToken(token).username(userDetails.getUsername()).roles(roles).build());
 	}
 
 	private void doAuthenticate(String username, String password) {

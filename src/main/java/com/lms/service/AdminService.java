@@ -35,6 +35,10 @@ public class AdminService {
 	public Teacher addTeacher(Teacher teacher) {
 		Optional<Teacher> checkTeacherAvailableOrNot = teacherRepository.findAll().stream()
 				.filter(t -> t.getTeacherEmail().equals(teacher.getTeacherEmail())).findAny();
+		Optional<UserInfo> teacherInfo = userInfoRepository.findByEmail(teacher.getTeacherEmail());
+		if(teacherInfo.isPresent()) {
+			throw new TeacherAlreadyRegisteredException("User already registered with email "+teacher.getTeacherEmail());
+		}
 		if (checkTeacherAvailableOrNot.isPresent()) {
 			throw new TeacherAlreadyRegisteredException(
 					"Teacher with email " + teacher.getTeacherEmail() + " already registered!!");

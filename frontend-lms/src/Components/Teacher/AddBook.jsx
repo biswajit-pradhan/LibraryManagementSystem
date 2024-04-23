@@ -1,10 +1,12 @@
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
 import { Formik } from "formik";
-import * as Yup from "yup";
 import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
+import * as Yup from "yup";
+import { useSelector } from "react-redux";
 
 const AddBook = () => {
+  const jwtToken = useSelector((state) => state.auth.jwtToken);
   const initialValues = {
     bookName: "",
     totalAvailability: "",
@@ -21,7 +23,12 @@ const AddBook = () => {
 
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      const response = await axios.post("/teacher/addBook", values);
+      const config = {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      };
+      const response = await axios.post("/teacher/addBook", values, config);
       console.log(response.data.bookName);
       toast.success("Book added successfully!!");
       resetForm();
@@ -33,18 +40,6 @@ const AddBook = () => {
 
   return (
     <>
-      <ToastContainer
-        position="bottom-left"
-        autoClose={4000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
       <div>
         <div>
           <div className="teacher_container">

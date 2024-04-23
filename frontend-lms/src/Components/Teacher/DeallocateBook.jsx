@@ -1,11 +1,13 @@
 import axios from "axios";
 import { Formik } from "formik";
 import { useState } from "react";
+import { useSelector } from 'react-redux';
 import { NavLink, useParams } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import * as Yup from "yup";
 
 const DeallocateBook = () => {
+  const jwtToken = useSelector((state) => state.auth.jwtToken);
   const [bookData, setBookData] = useState([]);
   const [studentData, setStudentData] = useState([]);
   const { bookId, studentId } = useParams();
@@ -22,11 +24,17 @@ const DeallocateBook = () => {
 
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      };
       const response = await axios.put(
         "/teacher/deallocateBookFromAStudent/" +
-          values.bookId +
-          "/" +
-          values.studentId
+        values.bookId +
+        "/" +
+        values.studentId, null,
+        config
       );
       console.log(response.data);
       toast.success("Book deallocated successfully!!");
@@ -41,18 +49,7 @@ const DeallocateBook = () => {
 
   return (
     <>
-      <ToastContainer
-        position="bottom-left"
-        autoClose={4000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
+
       <div>
         <div
           style={{

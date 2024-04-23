@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -18,8 +19,8 @@ import io.jsonwebtoken.security.Keys;
 @Component
 public class JwtHelper {
 
-	// 30 minutes
-	public static final long JWT_TOKEN_VALIDITY = 60 * 30;
+	@Value("${JWT_TOKEN_VALIDITY}")
+	public long JWT_TOKEN_VALIDITY;
 
 	public static final String SECRET_KEY = "afafasfafafasfasfasfafacasdasfasxASFACASDFACASDFASFASFDAFASFASDAADSCSDFADCVSGCFVADXCcadwavfsfarvf";
 

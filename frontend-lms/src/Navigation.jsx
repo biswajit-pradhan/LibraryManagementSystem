@@ -11,6 +11,7 @@ import Homepage from "./Components/Homepage";
 import Login from "./Components/Login";
 import Navbar from "./Components/Navbar";
 import StudentDashBoard from "./Components/Student/StudentDashBoard";
+import ViewAllBooksTakenByAStudentUsingUsername from './Components/Student/ViewAllBooksTakenByAStudentUsingUsername';
 import AddBook from "./Components/Teacher/AddBook";
 import AddStudent from "./Components/Teacher/AddStudent";
 import AllocateBook from "./Components/Teacher/AllocateBook";
@@ -90,6 +91,10 @@ const Navigation = () => {
           element={<ExtendAllocateDate />}
         />
         <Route path="/studentdashboard" element={<StudentDashBoard />} />
+        <Route
+          path="/viewallbookstakenbyastudentusingusername"
+          element={<ViewAllBooksTakenByAStudentUsingUsername />}
+        />
       </Routes>
       <Footer />
     </>

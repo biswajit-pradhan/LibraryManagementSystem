@@ -6,6 +6,7 @@ const initialState = {
   username: "",
   roles: "",
   isLoggedIn: "false",
+  jwtTokenValidity: 0,
 };
 
 const authSlice = createSlice({
@@ -13,17 +14,20 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login(state, action) {
-      const { jwtToken, username, roles, isLoggedIn } = action.payload;
+      const { jwtToken, username, roles, isLoggedIn, jwtTokenValidity } =
+        action.payload;
       state.jwtToken = jwtToken;
       state.username = username;
       state.roles = roles;
       state.isLoggedIn = isLoggedIn;
+      state.jwtTokenValidity = jwtTokenValidity;
     },
     logout(state) {
       state.jwtToken = "";
       state.username = "";
       state.roles = "";
       state.isLoggedIn = "false";
+      state.jwtTokenValidity = 0;
     },
   },
 });

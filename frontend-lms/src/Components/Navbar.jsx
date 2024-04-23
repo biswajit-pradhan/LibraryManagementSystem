@@ -1,11 +1,14 @@
-import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
+import { toast } from 'react-toastify';
 import logo from "../Images/Logo.jpg";
 import { logout } from "../Redux/Slices/authSlice";
 
 const Navbar = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const roles = useSelector((state) => state.auth.roles);
+  const jwtTokenValidity = useSelector((state) => state.auth.jwtTokenValidity);
+  // console.log(jwtTokenValidity);
   const dispatch = useDispatch();
   return (
     <>
@@ -99,6 +102,7 @@ const Navbar = () => {
                     className="btn btn-outline-light me-2"
                     onClick={() => {
                       dispatch(logout());
+                      toast.success("Logout Successfull!!")
                     }}
                   >
                     LOG OUT

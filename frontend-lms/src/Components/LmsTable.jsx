@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import ReactLoading from "react-loading";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 // props:{apiToFetch, columns, changeInResponse, jwtToken};
 
@@ -78,18 +78,7 @@ const LmsTable = (props) => {
 
   return loading ? (
     <>
-      <ToastContainer
-        position="bottom-left"
-        autoClose={4000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
+
       <div
         style={{
           display: "flex",

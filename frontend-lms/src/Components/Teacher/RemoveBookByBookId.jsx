@@ -1,17 +1,24 @@
 import axios from "axios";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
+import { useSelector } from 'react-redux';
 import { NavLink, useParams } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import * as Yup from "yup";
 
 const RemoveBookByBookId = () => {
+  const jwtToken = useSelector((state) => state.auth.jwtToken);
   const { bookId } = useParams();
   const [bookData, setBookData] = useState([]);
   useEffect(() => {
     const fetchBookData = async () => {
       try {
-        const response = await axios.get("/teacher/getAllBooks");
+        const config = {
+          headers: {
+            Authorization: `Bearer ${jwtToken}`,
+          },
+        };
+        const response = await axios.get("/teacher/getAllBooks", config);
         setBookData(response.data);
       } catch (error) {
         console.error("Error fetching book data:", error);
@@ -29,8 +36,13 @@ const RemoveBookByBookId = () => {
   const onSubmit = async (values, { setSubmitting, resetForm }) => {
     console.log(values);
     try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${jwtToken}`,
+        },
+      };
       const response = await axios.delete(
-        "/teacher/deleteBookByBookId/" + values.bookId
+        "/teacher/deleteBookByBookId/" + values.bookId, config
       );
       console.log(response.data);
       toast.success("Book deleted successfully!!");
@@ -43,18 +55,6 @@ const RemoveBookByBookId = () => {
   };
   return (
     <>
-      <ToastContainer
-        position="bottom-left"
-        autoClose={4000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
       <div className="delete_teacher">
         <div
           style={{

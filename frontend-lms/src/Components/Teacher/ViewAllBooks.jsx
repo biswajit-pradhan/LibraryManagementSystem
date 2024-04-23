@@ -1,8 +1,10 @@
 import React from "react";
-import LmsTable from "../LmsTable";
+import { useSelector } from 'react-redux';
 import { NavLink } from "react-router-dom";
+import LmsTable from "../LmsTable";
 
 const ViewAllBooks = () => {
+  const jwtToken = useSelector((state) => state.auth.jwtToken);
   const apiToFetch = "/teacher/getAllBooks";
   const columns = [
     {
@@ -79,18 +81,13 @@ const ViewAllBooks = () => {
         <NavLink type="button" className="btn btn-success" to="/addbook">
           ADD BOOK
         </NavLink>
-        <NavLink
-          type="button"
-          className="btn btn-danger"
-          to="/removebookbybookid"
-        >
-          REMOVE BOOK BY BOOK ID
-        </NavLink>
+
       </div>
       <LmsTable
         apiToFetch={apiToFetch}
         columns={columns}
         changeInResponse={changeInResponse}
+        jwtToken={jwtToken}
       />
     </div>
   );

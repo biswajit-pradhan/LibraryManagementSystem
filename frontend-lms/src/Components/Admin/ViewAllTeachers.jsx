@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 const ViewAllTeachers = () => {
   const jwtToken = useSelector((state) => state.auth.jwtToken);
+  console.log(jwtToken);
   const apiToFetch = "/admin/getAllTeachers";
   const columns = [
     {
@@ -45,9 +46,6 @@ const ViewAllTeachers = () => {
         <h1 className="custom_font">VIEW ALL TEACHERS</h1>
         <NavLink type="button" className="btn btn-success" to="/addteacher">
           ADD TEACHER
-        </NavLink>
-        <NavLink type="button" className="btn btn-danger" to="/deleteteacher">
-          DELETE TEACHER
         </NavLink>
       </div>
       <LmsTable

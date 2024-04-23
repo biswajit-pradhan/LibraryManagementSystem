@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { login } from "../Redux/Slices/authSlice";
 
 const Login = () => {
@@ -13,6 +13,7 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
+  const [isDisable, setIsDisable] = useState(false);
 
   const changeHandler = (event) => {
     setUser({
@@ -48,6 +49,8 @@ const Login = () => {
       try {
         const response = await axios.post("/auth/login", user);
         const data = response.data;
+        setIsDisable(true);
+        console.log(data);
         toast.success("login success!!");
         setTimeout(() => {
           dispatch(
@@ -56,6 +59,7 @@ const Login = () => {
               username: data.username,
               roles: data.roles,
               isLoggedIn: "true",
+              jwtTokenValidity: Date.now() / 1000 + (data.jwtTokenValidity - 2),
             })
           );
         }, 2000);
@@ -69,18 +73,6 @@ const Login = () => {
     <Navigate to="/" />
   ) : (
     <>
-      <ToastContainer
-        position="bottom-left"
-        autoClose={4000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
       <div className="page_container">
         <div className="event-booking-container">
           <div id="login">
@@ -105,6 +97,7 @@ const Login = () => {
                         name="username"
                         value={user.username}
                         onChange={changeHandler}
+
                       />
                     </div>
                     <span className="errors">{errors["username"]}</span>
@@ -133,6 +126,7 @@ const Login = () => {
                         <button
                           className="btn btn-info btn-md custom_font"
                           onClick={loginUser}
+                          disabled={isDisable}
                         >
                           Login
                         </button>

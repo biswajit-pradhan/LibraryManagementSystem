@@ -1,9 +1,9 @@
 import axios from "axios";
-import { toast, ToastContainer } from "react-toastify";
 import { Formik } from "formik";
-import * as Yup from "yup";
-import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
+import * as Yup from "yup";
 
 const AddTeacher = () => {
   const jwtToken = useSelector((state) => state.auth.jwtToken);
@@ -41,18 +41,6 @@ const AddTeacher = () => {
 
   return (
     <>
-      <ToastContainer
-        position="bottom-left"
-        autoClose={4000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
       <div>
         <div>
           <div className="teacher_container">
